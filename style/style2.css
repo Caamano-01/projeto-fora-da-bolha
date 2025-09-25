@@ -117,8 +117,12 @@
     flex-direction: column;
     gap: 18px;
   }
+ 
+  a {
+    text-decoration: none;
+  }
 
-  nav ul li {
+  li, a {
     cursor: pointer;
     font-weight: 600;
     font-size: 1.1em;
@@ -130,7 +134,7 @@
     transition: color 0.3s ease;
   }
 
-  nav ul li:hover {
+  a, li:hover {
     color: #d64f8d;
   }
 
@@ -213,6 +217,7 @@
     flex-wrap: nowrap;
     overflow-x: auto;
   }
+
   .post-card {
     background: #d64f8d;
     border-radius: 20px;
@@ -224,6 +229,7 @@
     gap: 10px;
     position: relative;
   }
+
   .post-header {
     display: flex;
     align-items: center;
@@ -232,6 +238,7 @@
     font-size: 0.9em;
     text-transform: uppercase;
   }
+
   .post-avatar {
     width: 36px;
     height: 36px;
@@ -244,6 +251,7 @@
     font-weight: bold;
     font-size: 1.1em;
   }
+
   .post-category {
     background: #f8e3e6;
     color: #d64f8d;
@@ -255,11 +263,14 @@
     top: 15px;
     right: 15px;
   }
+
   .post-image {
-    width: 100%;
+    width: 550px;
     border-radius: 15px;
     object-fit: cover;
+    height: 450px;
   }
+
   .post-caption {
     background: #f6c4d1;
     color: #ad6b9c;
@@ -268,6 +279,7 @@
     font-size: 0.9em;
     font-weight: 600;
   }
+
   .post-timestamp {
     font-size: 0.75em;
     text-align: right;
@@ -566,53 +578,15 @@ p {
   transition: background-color 0.3s ease;
 }
 
-  /* ====== RESPONSIVIDADE ====== */
-  @media (max-width: 768px) {
-    body {
-      flex-direction: column;
-      padding: 10px;
-    }
-    #sidebar {
-      width: 100%;
-      border-radius: 15px;
-      flex-direction: row;
-      overflow-x: auto;
-      padding: 10px;
-      gap: 10px;
-      align-items: center;
-    }
-    #perfil {
-      flex: none;
-    }
-    nav ul {
-      flex-direction: row;
-      gap: 15px;
-    }
-    #mainContent {
-      margin-left: 0;
-      margin-top: 10px;
-      border-radius: 15px;
-      padding: 15px;
-      overflow-y: visible;
-    }
-    #feedPosts {
-      flex-wrap: nowrap;
-      overflow-x: auto;
-    }
+.user-item:hover {
+  color: #b7c12e;
+}
 
-    .container-2 {
-    flex-direction: column;
-  }
 
-  .abas {
-    width: 100%;
-  }
 
-  .vertical {
-    writing-mode: horizontal-tb;
-    transform: none;
-  }
-  }
+
+
+
 
   /* ====== ESTILOS DO PLAYER SPOTIFY ====== */
 #moodDia {
@@ -704,4 +678,63 @@ p {
     gap: 20px;
     color: #f8e3e6;
     font-size: 1.2em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+  /* ====== RESPONSIVIDADE ====== */
+  @media (max-width: 768px) {
+    body {
+      flex-direction: column;
+      padding: 10px;
+    }
+    #sidebar {
+      width: 100%;
+      border-radius: 15px;
+      flex-direction: row;
+      overflow-x: auto;
+      padding: 10px;
+      gap: 10px;
+      align-items: center;
+    }
+    #perfil {
+      flex: none;
+    }
+    nav ul {
+      flex-direction: row;
+      gap: 15px;
+    }
+    #mainContent {
+      margin-left: 0;
+      margin-top: 10px;
+      border-radius: 15px;
+      padding: 15px;
+      overflow-y: visible;
+    }
+    #feedPosts {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+
+    .container-2 {
+    flex-direction: column;
+  }
+
+  .abas {
+    width: 100%;
+  }
+
+  .vertical {
+    writing-mode: horizontal-tb;
+    transform: none;
+  }
 }

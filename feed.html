@@ -27,10 +27,10 @@
                     </div>
                     <nav>
                         <ul>
-                            <li><span class="icon-circle"><i class="fas fa-tshirt"></i></span> Armário</li>
-                            <li><span class="icon-circle"><i class="fas fa-star"></i></span> Comunidades</li>
-                            <li><span class="icon-circle"><i class="fas fa-user-friends"></i></span> Seguindo</li>
-                            <li><span class="icon-circle"><i class="fas fa-globe"></i></span> Agora no Mundo</li>
+                            <a href="#armario"><li><span class="icon-circle"><i class="fas fa-tshirt"></i></span> Armário</li></a>
+                            <a href="#comunidades"><li><span class="icon-circle"><i class="fas fa-star"></i></span> Comunidades</li></a>
+                            <a href="#seguindo"><li><span class="icon-circle"><i class="fas fa-user-friends"></i></span> Seguindo</li></a>
+                            <a href="#agoraNoMundo"><li><span class="icon-circle"><i class="fas fa-globe"></i></span> Agora no Mundo</li></a>
                             <li id="btnFazerPost" style="cursor:pointer;"><span class="icon-circle"><i class="fas fa-plus"></i></span> Fazer Post</li>
                             <li id="btnLoginSpotify" style="cursor:pointer;"><span class="icon-circle"><i class="fab fa-spotify"></i></span> Conectar Spotify</li>
                         </ul>
@@ -66,31 +66,33 @@
                 </div>
             </div>
 
+
+
         <!-- Mood 2 -->
             <div>
                 <div class="container-2">
                     <!-- ARMÁRIO -->
-                    <div class="abas armario">
+                    <div id="armario" class="abas armario">
                         <h2><span class="icon-circle"><i class="fas fa-tshirt"></i></span> ARMÁRIO</h2>
                         <!-- Conteúdo do armário -->
                             <button id="btnAddArmario" class="button">Adicionar Peça</button>
                             <div id="armarioImages" class="armario-gallery">
                     </div>
 
-                        <div id="modalArmario" class="modal-overlay">
-                            <div class="modal-content">
-                                <button id="closeModalArmario" class="close-modal-btn">&times;</button>
-                                <h3>Adicionar Nova Peça ao Armário</h3>
-                                <form id="formArmario">
-                                    <input type="file" id="imagemArmarioUpload" accept="image/*" required/>
-                                    <button type="submit">Salvar no Armário</button>
-                                </form>
-                            </div>
+                    <div id="modalArmario" class="modal-overlay">
+                        <div class="modal-content">
+                            <button id="closeModalArmario" class="close-modal-btn">&times;</button>
+                            <h3>Adicionar Nova Peça ao Armário</h3>
+                            <form id="formArmario">
+                                <input type="file" id="imagemArmarioUpload" accept="image/*" required/>
+                                <button type="submit">Salvar no Armário</button>
+                            </form>
                         </div>
+                    </div>
                     </div>
 
                     <!-- COMUNIDADES -->
-                    <div class="abas comunidades">
+                    <div id="comunidades" class="abas comunidades">
                         <h2><span class="icon-circle"><i class="fas fa-star"></i></span> COMUNIDADES</h2>
                         <!-- Conteúdo das comunidades -->
                         <div id="modalComunidade" class="modal">
@@ -117,7 +119,7 @@
                     </div>
 
                     <!-- SEGUINDO -->
-                    <div class="abas seguindo">
+                    <div id="seguindo" class="abas seguindo">
                         <h2><span class="icon-circle"><i class="fas fa-user-friends"></i></span> SEGUINDO</h2>
                         <!-- Conteúdo seguindo -->
                         <ul id="user-list">
