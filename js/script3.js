@@ -8,6 +8,9 @@ import {
   orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+// --- Elementos DOM ---
+const comunidadesPostSelect = document.getElementById('comunidadesPost');
+const listaComunidades = document.getElementById('listaComunidades');
 const btnFazerPost = document.getElementById("btnFazerPost");
 const modalOverlay = document.getElementById("modalOverlay");
 const postForm = document.getElementById("postForm");
@@ -16,7 +19,7 @@ const closeModalBtn = document.getElementById("closeModalBtn");
 const inputSearch = document.getElementById("inputSearch");
 const btnLimparBusca = document.getElementById("btnLimparBusca");
 
-// Dados Cloudinary - substitua pelos seus
+// --- Dados Cloudinary ---
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dyeh43lpp/upload";
 const CLOUDINARY_UPLOAD_PRESET = "fora-da-bolha";
 
@@ -31,7 +34,7 @@ closeModalBtn.addEventListener("click", () => {
   postForm.reset();
 });
 
-// --- Função para upload na Cloudinary ---
+// --- Upload para Cloudinary ---
 async function uploadToCloudinary(file) {
   const formData = new FormData();
   formData.append("file", file);
@@ -47,22 +50,21 @@ async function uploadToCloudinary(file) {
   }
 
   const data = await response.json();
-  return data.secure_url; // URL pública da imagem
+  return data.secure_url;
 }
 
-// --- Postar no Firestore com upload Cloudinary ---
+// --- Postar no Firestore ---
 postForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const usuario = document.getElementById("usuario").value.trim();
-  const categoria = document.getElementById("categoria").value.trim();
   const legenda = document.getElementById("legenda").value.trim();
   const imagemArquivo = document.getElementById("imagemUpload").files[0];
   const imagemURLManual = document.getElementById("imagemURL").value.trim();
+  const comunidadesSelecionadas = Array.from(comunidadesPostSelect.selectedOptions).map(option => option.value);
 
   let imagemURLFinal = imagemURLManual;
 
-  // Upload arquivo para Cloudinary se existir
   if (imagemArquivo) {
     try {
       imagemURLFinal = await uploadToCloudinary(imagemArquivo);
@@ -72,15 +74,15 @@ postForm.addEventListener("submit", async (e) => {
     }
   }
 
-  if (!usuario || !categoria || !legenda || !imagemURLFinal) {
-    alert("Preencha todos os campos e informe uma imagem (upload ou URL).");
+  if (!usuario || comunidadesSelecionadas.length === 0 || !legenda || !imagemURLFinal) {
+    alert("Preencha todos os campos e informe uma ou mais comunidades.");
     return;
   }
 
   try {
     await addDoc(collection(db, "posts"), {
       usuario,
-      categoria,
+      comunidades: comunidadesSelecionadas,
       legenda,
       imagemURL: imagemURLFinal,
       timestamp: serverTimestamp()
@@ -94,19 +96,40 @@ postForm.addEventListener("submit", async (e) => {
   postForm.reset();
 });
 
-// --- Renderizar posts individualmente ---
+// --- Renderizar comunidades em tempo real ---
+const comunidadesQuery = query(collection(db, 'comunidades'), orderBy('timestamp', 'desc'));
+onSnapshot(comunidadesQuery, (snapshot) => {
+  if (snapshot.empty) {
+    if (listaComunidades) {
+      listaComunidades.innerHTML = '<p>Nenhuma comunidade criada ainda.</p>';
+    }
+    comunidadesPostSelect.innerHTML = '<option value="" disabled>Nenhuma comunidade disponível</option>';
+    return;
+  }
+
+  const comunidades = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+  if (listaComunidades) {
+    listaComunidades.innerHTML = comunidades.map(renderComunidade).join('');
+  }
+
+  comunidadesPostSelect.innerHTML = comunidades.map(comunidade =>
+    `<option value="${comunidade.nome}">${comunidade.nome}</option>`
+  ).join('');
+});
+
+// --- Renderizar um post individual ---
 function renderPost(post) {
-  const timeString = post.timestamp
-    ? new Date(post.timestamp.toDate()).toLocaleString()
-    : "";
+  const timeString = post.timestamp ? new Date(post.timestamp.toDate()).toLocaleString() : "";
+  const comunidadesText = post.comunidades ? post.comunidades.join(', ') : 'N/A';
 
   return `
     <div class="post-card">
       <div class="post-header">
-        <div class="post-avatar">${post.usuario.charAt(1)?.toUpperCase() || "?"}</div>
+        <div class="post-avatar">${post.usuario.charAt(0)?.toUpperCase() || "?"}</div>
         <div>${post.usuario}</div>
       </div>
-      <div class="post-category">em '${post.categoria}'</div>
+      <div class="post-category">em '${comunidadesText}'</div> 
       <img class="post-image" src="${post.imagemURL}" alt="Imagem do post" />
       <div class="post-caption">${post.legenda}</div>
       <div class="post-timestamp">${timeString}</div>
@@ -114,21 +137,20 @@ function renderPost(post) {
   `;
 }
 
+// --- Feed de posts em tempo real ---
 let postsCache = [];
 
-// --- Query para pegar posts em tempo real ordenados por timestamp ---
 const queryPosts = query(
   collection(db, "posts"),
   orderBy("timestamp", "desc")
 );
 
-// --- Atualiza feed em tempo real ---
 onSnapshot(queryPosts, (snapshot) => {
   postsCache = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   renderFeed(postsCache);
 });
 
-// --- Renderiza o feed com filtro de busca ---
+// --- Renderizar o feed com filtro ---
 function renderFeed(posts) {
   const busca = inputSearch.value.trim().toLowerCase();
   let filteredPosts = posts;
@@ -136,117 +158,29 @@ function renderFeed(posts) {
   if (busca) {
     filteredPosts = posts.filter(post =>
       post.usuario.toLowerCase().includes(busca) ||
-      post.categoria.toLowerCase().includes(busca) ||
-      post.legenda.toLowerCase().includes(busca)
+      (post.legenda && post.legenda.toLowerCase().includes(busca)) ||
+      (post.comunidades && post.comunidades.join(', ').toLowerCase().includes(busca))
     );
   }
 
   feedPosts.innerHTML = filteredPosts.map(renderPost).join("");
 }
 
-// --- Botão limpar busca ---
+// --- Eventos de busca ---
 btnLimparBusca.addEventListener("click", () => {
   inputSearch.value = "";
   renderFeed(postsCache);
 });
 
-// --- Atualiza feed enquanto digita ---
 inputSearch.addEventListener("input", () => {
   renderFeed(postsCache);
 });
 
-
-
-// =========================================================
-// INTEGRAÇÃO COM SPOTIFY API
-// =========================================================
-
-const CLIENT_ID = '9fd81c38dae94d8f972f6b93fd975426';
-const REDIRECT_URI = 'http://127.0.0.1:5500/feed.html';
-
-const authUrl = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${REDIRECT_URI}&scope=user-read-currently-playing`;
-
-const btnLoginSpotify = document.getElementById('btnLoginSpotify');
-const spotifyPlayer = document.getElementById('spotify-player');
-
-// 1. Lida com o clique no botão para iniciar a autenticação
-btnLoginSpotify.addEventListener('click', () => {
-    window.location.href = authUrl;
-});
-
-// 2. Verifica o URL para obter o token de acesso após o redirecionamento
-function getSpotifyAccessToken() {
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    return params.get('access_token');
-}
-
-// 3. Busca a música que está tocando no momento
-async function getCurrentlyPlaying(token) {
-    try {
-        const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        if (response.status === 204 || response.status > 400) {
-            spotifyPlayer.innerHTML = 'Nenhuma música tocando.';
-            return;
-        }
-
-        const data = await response.json();
-        renderSpotifyPlayer(data);
-    } catch (error) {
-        console.error('Erro ao buscar música do Spotify:', error);
-        spotifyPlayer.innerHTML = 'Erro ao conectar com Spotify.';
-    }
-}
-
-// 4. Renderiza a interface do player
-// 4. Renderiza a interface do player
-function renderSpotifyPlayer(data) {
-    if (!data.item) {
-        spotifyPlayer.innerHTML = 'Nenhuma música tocando.';
-        return;
-    }
-
-    const track = data.item;
-    const albumArt = track.album.images[0].url;
-    const artists = track.artists.map(artist => artist.name).join(', ');
-
-    // Usando `data.progress_ms` para o progresso da música
-    const progressMs = data.progress_ms;
-    const durationMs = track.duration_ms;
-
-    // Apenas para mostrar o progresso visualmente (não é funcional)
-    const progressPercent = (progressMs / durationMs) * 100;
-    
-    spotifyPlayer.innerHTML = `
-        <div class="player-container">
-            <div class="player-info">
-                <img src="${albumArt}" alt="Capa do Álbum" class="player-album-art">
-                <div class="player-details">
-                    <p class="player-track-name">${track.name}</p>
-                    <p class="player-artist-name">${artists}</p>
-                </div>
-            </div>
-            
-            <div class="player-controls">
-                <div class="player-progress-bar">
-                    <div class="player-progress" style="width: ${progressPercent}%;"></div>
-                </div>
-                <div class="player-progress-time">
-                    <span>${(progressMs / 1000).toFixed(0)}</span>
-                    <span>-${((durationMs - progressMs) / 1000).toFixed(0)}</span>
-                </div>
-                <div class="player-buttons">
-                    <i class="fas fa-step-backward"></i>
-                    <i class="fas fa-play"></i>
-                    <i class="fas fa-step-forward"></i>
-                    <i class="fas fa-podcast"></i>
-                </div>
-            </div>
-        </div>
-    `;
+function renderComunidade(comunidade) {
+  return `
+    <div class="community-bubble">
+      <img src="" alt="${comunidade.nome}">
+      <span>${comunidade.nome}</span>
+    </div>
+  `;
 }
