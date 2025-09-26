@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fora da bolha</title>
+
+    <!-- Link style -->
+     <link rel="stylesheet" href="style/style1.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Lado esquerdo com colagem -->
+        <div class="left"></div>
+
+        <!-- Lado direito com login/cadastro -->
+        <div class="right">
+        <img src="img/Logo.png" alt="Logo Fora da Bolha" class="logo">
+
+        <button class="button" id="btnCadastro">Cadastre-se</button>
+        <button class="button" id="btnLogin">Login</button>
+        <button class="button" id="btnLoginGoogle">Entrar com Google</button>
+
+        <!-- Formulário Cadastro -->
+        <form id="formCadastro">
+            <input type="text" placeholder="Nome" required />
+            <input type="text" placeholder="Nome de usuário" required />
+            <input type="email" placeholder="Email" required />
+            <input type="password" placeholder="Senha" required />
+            <button class="button" type="submit">Cadastre-se</button>
+        </form>
+
+        <!-- Formulário Login -->
+        <form id="formLogin">
+            <input type="email" placeholder="Email" required />
+            <input type="password" placeholder="Senha" required />
+            <button class="button" type="submit">Entrar</button>
+        </form>
+        </div>
+    </div>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+    <!-- Script -->
+    <script src="js/script1.js"></script>
+</body>
+</html>

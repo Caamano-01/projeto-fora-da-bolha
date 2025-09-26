@@ -1,0 +1,74 @@
+:root {
+  --fundo-azul: #26226d;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Lado esquerdo (colagem) */
+.left {
+  flex: 1;
+  background-image: url('/img/capa-1.png');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Lado direito (formulários e botões) */
+.right {
+  flex: 1;
+  background-color: var(--fundo-azul);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 600px;
+  margin-bottom: 40px;
+}
+
+.button {
+  background-color: #fffaf0;
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  padding: 20px 0;
+  margin: 8px 0;
+  width: 300px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #b7c12e;
+}
+
+form {
+  display: none;
+  margin-top: 10px;
+}
+
+input {
+  display: block;
+  border-radius: 8px;
+  margin: 3px auto;
+  padding: 15px;
+  width: 300px;
+  font-size: 16px;
+}

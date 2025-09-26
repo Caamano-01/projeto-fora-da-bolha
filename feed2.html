@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed</title>
+
+    <!-- Link style -->
+    <link rel="stylesheet" href="style/style3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+<body>
+    <main>
+        <!-- Mood 1 -->
+            <div class="container-1">
+                <!-- SIDEBAR -->
+                <div id="sidebar">
+                    <div id="perfil">
+                        <img src="https://i.pravatar.cc/150?u=vfoscarni" alt="Foto do perfil" />
+                        <span>@</span>
+                    </div>
+                    <nav>
+                        <ul>
+                            <li><a href=""><span class="icon-circle"><i class="fas fa-tshirt"></i></span> Armário</a></li>
+                            <li><a href=""><span class="icon-circle"><i class="fas fa-star"></i></span> Comunidades</a></li>
+                            <li><a href=""><span class="icon-circle"><i class="fas fa-user-friends"></i></span> Seguindo</a></li>
+                            <li><a href=""><span class="icon-circle"><i class="fas fa-globe"></i></span> Agora no Mundo</a></li>
+                            <li id="btnFazerPost" style="cursor:pointer;"><span class="icon-circle"><i class="fas fa-plus"></i></span> Fazer Post</li>
+                            <li id="btnLoginSpotify" style="cursor:pointer;"><span class="icon-circle"><i class="fab fa-spotify"></i></span> Conectar Spotify</li>
+                        </ul>
+                    </nav>
+                    <div id="moodDia">
+                        MOOD DO DIA:
+                        <div id="spotify-player"></div>
+                    </div>
+                </div>
+
+                <!-- CONTEÚDO PRINCIPAL -->
+                <div id="mainContent">
+                    
+                </div>
+
+                <!-- MODAL FORMULÁRIO -->
+                <div id="modalOverlay">
+                    <form id="postForm">
+                        <button type="button" id="closeModalBtn" title="Fechar">×</button>
+                        <input type="text" id="usuario" placeholder="@seu-usuario" required />
+                        <input type="text" id="categoria" placeholder="Categoria (ex: Livros)" required />
+                        <textarea id="legenda" placeholder="Legenda do post" required></textarea>
+                        <input type="file" id="imagemUpload" accept="image/*" />
+                        <input type="text" id="imagemURL" placeholder="Ou cole a URL da imagem" />
+                        <button type="submit">Postar</button>
+                    </form>
+                </div>
+            </div>
+
+        <!-- Mood 2 -->
+         <div class="container-1">
+                <!-- SIDEBAR -->
+                <div id="sidebar">
+                    <div id="perfil">
+                        <img src="https://i.pravatar.cc/150?u=vfoscarni" alt="Foto do perfil" />
+                        <span>@</span>
+                    </div>
+                    <nav>
+                        <ul>
+                            <li><span class="icon-circle"><i class="fas fa-tshirt"></i></span> Armário</li>
+                            <li><span class="icon-circle"><i class="fas fa-star"></i></span> Comunidades</li>
+                            <li><span class="icon-circle"><i class="fas fa-user-friends"></i></span> Seguindo</li>
+                            <li><span class="icon-circle"><i class="fas fa-globe"></i></span> Agora no Mundo</li>
+                            <li id="btnFazerPost" style="cursor:pointer;"><span class="icon-circle"><i class="fas fa-plus"></i></span> Fazer Post</li>
+                        </ul>
+                    </nav>
+                    <div id="moodDia">
+                        MOOD DO DIA:
+                        <div id="spotify-player"></div>
+                    </div>
+                </div>
+
+                <!-- CONTEÚDO PRINCIPAL -->
+                <div id="mainContent">
+                    
+                </div>
+
+                <!-- MODAL FORMULÁRIO -->
+                <div id="modalOverlay">
+                    <form id="postForm">
+                        <button type="button" id="closeModalBtn" title="Fechar">×</button>
+                        <input type="text" id="usuario" placeholder="@seu-usuario" required />
+                        <input type="text" id="categoria" placeholder="Categoria (ex: Livros)" required />
+                        <textarea id="legenda" placeholder="Legenda do post" required></textarea>
+                        <input type="file" id="imagemUpload" accept="image/*" />
+                        <input type="text" id="imagemURL" placeholder="Ou cole a URL da imagem" />
+                        <button type="submit">Postar</button>
+                    </form>
+                </div>
+            </div>
+            
+    </main>
+    
+    <!-- Script -->
+    <script type="module" src="js/script3.js"></script>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+</body>
+</html>

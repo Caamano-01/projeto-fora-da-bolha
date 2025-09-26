@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed</title>
+
+    <!-- Link style -->
+    <link rel="stylesheet" href="style/style2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+<body>
+    <main>
+        <!-- Mood 1 -->
+            <div class="container-1">
+                <!-- SIDEBAR -->
+                <div id="sidebar">
+                    <div id="perfil">
+                        <div class="foto-container" id="foto-container">
+                            <img id="foto-perfil" src="" alt="Foto do perfil"/> <!--Imagem preenchida via script-->
+                            <div class="overlay">Trocar foto de perfil</div>
+                        </div>
+
+                        <input type="file" id="input-foto" accept="image/*" />
+                        <span>@V.FOSCARINI</span>
+                    </div>
+                    <nav>
+                        <ul>
+                            <li><span class="icon-circle"><i class="fas fa-tshirt"></i></span> Armário</li>
+                            <li><span class="icon-circle"><i class="fas fa-star"></i></span> Comunidades</li>
+                            <li><span class="icon-circle"><i class="fas fa-user-friends"></i></span> Seguindo</li>
+                            <li><span class="icon-circle"><i class="fas fa-globe"></i></span> Agora no Mundo</li>
+                            <li id="btnFazerPost" style="cursor:pointer;"><span class="icon-circle"><i class="fas fa-plus"></i></span> Fazer Post</li>
+                            <li id="btnLoginSpotify" style="cursor:pointer;"><span class="icon-circle"><i class="fab fa-spotify"></i></span> Conectar Spotify</li>
+                        </ul>
+                    </nav>
+                    <div id="moodDia">
+                        MOOD DO DIA:
+                        <div id="spotify-player"></div>
+                    </div>
+                </div>
+
+                <!-- CONTEÚDO PRINCIPAL -->
+                <div id="mainContent">
+                    <div id="searchBar">
+                        <input type="text" id="inputSearch" placeholder="Buscar..." />
+                        <button id="btnLimparBusca">×</button>
+                    </div>
+                    <div id="feedPosts">
+                        <!-- Posts dinâmicos vão aqui -->
+                    </div>
+                </div>
+
+                <!-- MODAL FORMULÁRIO -->
+                <div id="modalOverlay">
+                    <form id="postForm">
+                        <button type="button" id="closeModalBtn" title="Fechar">×</button>
+                        <input type="text" id="usuario" placeholder="@seu-usuario" required />
+                        <input type="text" id="categoria" placeholder="Categoria (ex: Livros)" required />
+                        <textarea id="legenda" placeholder="Legenda do post" required></textarea>
+                        <input type="file" id="imagemUpload" accept="image/*" />
+                        <input type="text" id="imagemURL" placeholder="Ou cole a URL da imagem" />
+                        <button type="submit">Postar</button>
+                    </form>
+                </div>
+            </div>
+
+        <!-- Mood 2 -->
+            <div>
+                <div class="container-2">
+                    <!-- ARMÁRIO -->
+                    <div class="abas armario">
+                        <h2><span class="icon-circle"><i class="fas fa-tshirt"></i></span> ARMÁRIO</h2>
+                        <!-- Conteúdo do armário -->
+                            <button id="btnAddArmario" class="button">Adicionar Peça</button>
+                            <div id="armarioImages" class="armario-gallery">
+                    </div>
+
+                        <div id="modalArmario" class="modal-overlay">
+                            <div class="modal-content">
+                                <button id="closeModalArmario" class="close-modal-btn">&times;</button>
+                                <h3>Adicionar Nova Peça ao Armário</h3>
+                                <form id="formArmario">
+                                    <input type="file" id="imagemArmarioUpload" accept="image/*" required/>
+                                    <button type="submit">Salvar no Armário</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COMUNIDADES -->
+                    <div class="abas comunidades">
+                        <h2><span class="icon-circle"><i class="fas fa-star"></i></span> COMUNIDADES</h2>
+                        <!-- Conteúdo das comunidades -->
+                        <div id="modalComunidade" class="modal">
+                            <div class="modal-content">
+                                <span id="closeModalComunidade" class="close">&times;</span>
+                                <h2>Criar Comunidade</h2>
+                                <form id="formComunidade">
+                                <label for="nomeComunidade">Nome da Comunidade:</label>
+                                <input type="text" id="nomeComunidade" required />
+
+                                <label for="imagemComunidadeUpload">Foto da Comunidade:</label>
+                                <input type="file" id="imagemComunidadeUpload" accept="image/*" required />
+
+                                <button class="button" type="submit">Criar</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Botão para abrir modal -->
+                        <button class="button" id="btnAddComunidade">Criar Comunidade</button>
+
+                        <!-- Lista de Comunidades -->
+                        <div id="listaComunidades"></div>
+                    </div>
+
+                    <!-- SEGUINDO -->
+                    <div class="abas seguindo">
+                        <h2><span class="icon-circle"><i class="fas fa-user-friends"></i></span> SEGUINDO</h2>
+                        <!-- Conteúdo seguindo -->
+                        <ul id="user-list">
+
+                        </ul>
+                        
+                    </div>
+
+                    <!-- AGORA NO MUNDO -->
+                    <div class="abas agora-mundo">
+                        <h2 class="vertical"><span class="icon-circle"><i class="fas fa-globe"></i></span> AGORA NO MUNDO</h2>
+                    </div>
+                </div>
+            </div>
+    </main>
+    
+    <!-- Script -->
+    <script type="module" src="js/script2.js"></script>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+</body>
+</html>
