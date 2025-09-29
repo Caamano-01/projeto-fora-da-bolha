@@ -12,6 +12,8 @@ import {
   query,
   orderBy,
   where,
+  deleteDoc,
+  doc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const auth = getAuth();
@@ -48,39 +50,35 @@ async function uploadToCloudinary(file) {
 // =========================
 // FOTO DE PERFIL
 // =========================
+
 const fotoPerfil = document.getElementById('foto-perfil');
 const inputFoto = document.getElementById('input-foto');
 const container = document.getElementById('foto-container');
 
 const ICONE_PADRAO = "https://img.icons8.com/material-rounded/96/user-male-circle.png";
 
-// 🔁 Carrega imagem salva no localStorage ao iniciar
 const imagemSalva = localStorage.getItem('fotoPerfil');
-  if (imagemSalva) {
-    fotoPerfil.src = imagemSalva;
-  } else {
-    fotoPerfil.src = ICONE_PADRAO;
-  }
+if (imagemSalva) {
+  fotoPerfil.src = imagemSalva;
+} else {
+  fotoPerfil.src = ICONE_PADRAO;
+}
 
-// 📸 Ao clicar na imagem, abre o input
 container.addEventListener('click', () => {
-    inputFoto.click();
+  inputFoto.click();
 });
 
-// 📥 Quando o usuário escolhe uma nova imagem
 inputFoto.addEventListener('change', function () {
-    const file = this.files[0];
-      if (file) {
-        const leitor = new FileReader();
-        leitor.onload = function (e) {
-            const novaImagem = e.target.result;
-            fotoPerfil.src = novaImagem;
-
-            // 💾 Salva no localStorage
-            localStorage.setItem('fotoPerfil', novaImagem);
-        };
-        leitor.readAsDataURL(file);
-    }
+  const file = this.files[0];
+  if (file) {
+    const leitor = new FileReader();
+    leitor.onload = function (e) {
+      const novaImagem = e.target.result;
+      fotoPerfil.src = novaImagem;
+      localStorage.setItem('fotoPerfil', novaImagem);
+    };
+    leitor.readAsDataURL(file);
+  }
 });
 
 // =========================
@@ -101,20 +99,19 @@ const closeModalArmario = document.getElementById("closeModalArmario");
 const formArmario = document.getElementById("formArmario");
 const armarioImages = document.getElementById("armarioImages");
 
-
 // =========================
 // MODAL POSTS
 // =========================
 
 btnFazerPost.addEventListener("click", () => {
   modalOverlay.classList.add("active");
+  preencherSelectComunidades();
 });
 
 closeModalBtn.addEventListener("click", () => {
   modalOverlay.classList.remove("active");
   postForm.reset();
 });
-
 
 // =========================
 // FAZER POST
@@ -141,7 +138,7 @@ postForm.addEventListener("submit", async (e) => {
     }
   }
 
-  if (!usuario || !categoria || !legenda || !imagemURLFinal) {
+  if (!usuario || comunidadesSelecionadas.length === 0 || !legenda || !imagemURLFinal) {
     alert("Preencha todos os campos e informe uma imagem (upload ou URL).");
     return;
   }
@@ -152,6 +149,7 @@ postForm.addEventListener("submit", async (e) => {
       comunidades: comunidadesSelecionadas,
       legenda,
       imagemURL: imagemURLFinal,
+      userId: currentUser.uid,
       timestamp: serverTimestamp()
     });
   } catch (error) {
@@ -168,29 +166,27 @@ function preencherSelectComunidades() {
   const q = query(collection(db, 'comunidades'), orderBy('timestamp', 'desc'));
 
   onSnapshot(q, snapshot => {
-    select.innerHTML = ''; // limpa
+    select.innerHTML = '';
     snapshot.forEach(doc => {
       const comunidade = doc.data();
       const option = document.createElement('option');
-      option.value = doc.id; // salva o ID da comunidade
+      option.value = doc.id;
       option.textContent = comunidade.nome;
       select.appendChild(option);
     });
   });
 }
 
-btnFazerPost.addEventListener("click", () => {
-  modalOverlay.classList.add("active");
-  preencherSelectComunidades();
-});
-
 // =========================
 // FEED DE POSTS
 // =========================
-
 function escapeHTML(str) {
   return str.replace(/[&<>"']/g, match => ({
-    '&': "&amp;", '<': "&lt;", '>': "&gt;", '"': "&quot;", "'": "&#039;"
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
   })[match]);
 }
 
@@ -199,8 +195,12 @@ function renderPost(post) {
     ? new Date(post.timestamp.toDate()).toLocaleString()
     : "";
 
+  const deleteButton = (currentUser && post.userId === currentUser.uid) ?
+    `<button class="delete-post-btn" data-post-id="${post.id}">×</button>` : '';
+
   return `
     <div class="post-card">
+      ${deleteButton}
       <div class="post-header">
         <div class="post-avatar">${post.usuario.charAt(0)?.toUpperCase() || "?"}</div>
         <div>${escapeHTML(post.usuario)}</div>
@@ -222,6 +222,20 @@ const queryPosts = query(collection(db, "posts"), orderBy("timestamp", "desc"));
 onSnapshot(queryPosts, (snapshot) => {
   postsCache = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   renderFeed(postsCache);
+  const deleteButtons = document.querySelectorAll('.delete-post-btn');
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', async (e) => {
+      const postId = e.target.dataset.postId;
+      if (confirm("Tem certeza que deseja excluir este post?")) {
+        try {
+          await deleteDoc(doc(db, "posts", postId));
+          alert("Post excluído com sucesso!");
+        } catch (error) {
+          alert("Erro ao excluir post: " + error.message);
+        }
+      }
+    });
+  });
 });
 
 function renderFeed(posts) {
@@ -231,7 +245,7 @@ function renderFeed(posts) {
   if (busca) {
     filteredPosts = posts.filter(post =>
       post.usuario.toLowerCase().includes(busca) ||
-      post.categoria.toLowerCase().includes(busca) ||
+      post.comunidades.some(com => com.toLowerCase().includes(busca)) ||
       post.legenda.toLowerCase().includes(busca)
     );
   }
@@ -304,12 +318,35 @@ function getArmarioItems(userId) {
       return;
     }
 
-    snapshot.forEach((doc) => {
-      const item = doc.data();
+    snapshot.forEach((docItem) => {
+      const item = docItem.data();
+      const itemId = docItem.id; // Obtenha o ID do documento
+      
+      // Crie um contêiner para a imagem e o botão
+      const container = document.createElement("div");
+      container.classList.add("armario-item-container");
+
       const img = document.createElement("img");
       img.src = item.imagemURL;
       img.classList.add("armario-img");
-      armarioImages.appendChild(img);
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.classList.add("delete-armario-btn");
+      deleteBtn.textContent = "×";
+      deleteBtn.addEventListener('click', async () => {
+        if (confirm("Tem certeza que deseja excluir esta peça do seu armário?")) {
+          try {
+            await deleteDoc(doc(db, "armarioItems", itemId));
+            alert("Item excluído com sucesso!");
+          } catch (error) {
+            alert("Erro ao excluir item: " + error.message);
+          }
+        }
+      });
+
+      container.appendChild(img);
+      container.appendChild(deleteBtn);
+      armarioImages.appendChild(container);
     });
   });
 }
