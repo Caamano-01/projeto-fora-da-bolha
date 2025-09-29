@@ -89,7 +89,7 @@ nav ul li:hover svg {
 .communities-list {
   display: flex;
   gap: 10px;
-  overflow-x: auto; /* Permite rolagem horizontal se houver muitas comunidades */
+  overflow-x: auto;
 }
 
 .community-bubble {
@@ -262,6 +262,6 @@ nav ul li:hover svg {
 }
 
 .community-bubble.active {
-  border: 3px solid #d64f8d;
+  border: 3px solid #b7c12e;
   box-shadow: 0 0 10px #d64f8d;
 }
