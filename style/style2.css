@@ -131,11 +131,11 @@
     align-items: center;
     gap: 10px;
     color: #ad6b9c;
-    transition: color 0.3s ease;
+    transition: color 1s ease;
   }
 
   a, li:hover {
-    color: #d64f8d;
+    color: #b7c12e;
   }
 
   nav ul li svg {
@@ -144,7 +144,7 @@
   }
 
   nav ul li:hover svg {
-    fill: #d64f8d;
+    fill: #b7c12e;
   }
 
   #sidebar nav ul li svg {
@@ -563,6 +563,10 @@ p {
   object-fit: cover;
   flex-shrink: 0;
   border: 2px solid white;
+}
+
+.comunidades {
+  overflow-y: auto;
 }
 
 .comunidade-nome {
