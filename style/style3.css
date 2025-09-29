@@ -89,7 +89,6 @@ nav ul li:hover svg {
 .communities-list {
   display: flex;
   gap: 10px;
-  margin-top: 20px;
   overflow-x: auto; /* Permite rolagem horizontal se houver muitas comunidades */
 }
 
@@ -175,7 +174,7 @@ nav ul li:hover svg {
 
 /* Estilos para o feed de posts e posts individuais */
 #feedPosts {
-    margin-top: 30px;
+  margin-top: 15px;
     display: flex;
     gap: 20px;
     flex-wrap: nowrap;
@@ -260,4 +259,9 @@ nav ul li:hover svg {
   flex-wrap: wrap;
   gap: 10px;
   width: 1610px;
+}
+
+.community-bubble.active {
+  border: 3px solid #d64f8d;
+  box-shadow: 0 0 10px #d64f8d;
 }

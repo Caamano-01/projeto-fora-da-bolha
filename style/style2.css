@@ -229,7 +229,7 @@
     flex-direction: column;
     gap: 10px;
     position: relative;
-    width: 600px;
+    width: 800px;
     height: 600px;
   }
 
@@ -268,10 +268,11 @@
   }
 
   .post-image {
+    width: 350px;         /* Largura total do card */
+    height: 75%;       /* Altura fixa para todas as imagens */
     border-radius: 15px;
-    object-fit: cover;
-    width: 100%;
-    height: 75%;
+    object-fit: cover;   /* Corta o excesso mantendo proporção e preenchendo */
+    object-position: center; /* Centraliza a imagem no corte */
   }
 
   .post-caption {
@@ -281,6 +282,9 @@
     border-radius: 15px;
     font-size: 0.9em;
     font-weight: 600;
+    max-height: 100px;
+    overflow-y: auto;
+    min-height: 40px;
   }
 
   .post-timestamp {

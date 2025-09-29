@@ -110,7 +110,16 @@ onSnapshot(comunidadesQuery, (snapshot) => {
   const comunidades = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
   if (listaComunidades) {
-    listaComunidades.innerHTML = comunidades.map(renderComunidade).join('');
+    // Inclui bolha "Todos"
+    const bolhaTodos = `
+      <div class="community-bubble" data-nome="__todos__">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="Todos" />
+        <span>Todos</span>
+      </div>
+    `;
+
+    listaComunidades.innerHTML = bolhaTodos + comunidades.map(renderComunidade).join('');
+    addFiltroPorComunidade(); // <- importante
   }
 
   comunidadesPostSelect.innerHTML = comunidades.map(comunidade =>
@@ -166,33 +175,36 @@ function renderFeed(posts) {
   feedPosts.innerHTML = filteredPosts.map(renderPost).join("");
 }
 
-// --- Eventos de busca ---
-btnLimparBusca.addEventListener("click", () => {
-  inputSearch.value = "";
-  renderFeed(postsCache);
-});
-
-inputSearch.addEventListener("input", () => {
-  renderFeed(postsCache);
-});
-
+// --- Render de bolhas das comunidades ---
 function renderComunidade(comunidade) {
   const imagem = comunidade.imagemURL || "https://api.cloudinary.com/v1_1/dyeh43lpp/upload";
 
   return `
-    <div class="community-bubble">
+    <div class="community-bubble" data-nome="${comunidade.nome}">
       <img src="${imagem}" alt="${comunidade.nome}" />
       <span>${comunidade.nome}</span>
     </div>
   `;
 }
 
+// --- Filtro por comunidade ---
 function addFiltroPorComunidade() {
   const bolhas = document.querySelectorAll('.community-bubble');
 
   bolhas.forEach(bolha => {
     bolha.addEventListener('click', () => {
+      // Remover destaque de todas
+      bolhas.forEach(b => b.classList.remove('active'));
+
+      // Adicionar destaque na clicada
+      bolha.classList.add('active');
+
       const nomeComunidade = bolha.dataset.nome;
+
+      if (nomeComunidade === "__todos__") {
+        renderFeed(postsCache);
+        return;
+      }
 
       const filtrados = postsCache.filter(post =>
         post.comunidades && post.comunidades.includes(nomeComunidade)
@@ -202,6 +214,3 @@ function addFiltroPorComunidade() {
     });
   });
 }
-
-listaComunidades.innerHTML = comunidades.map(renderComunidade).join('');
-addFiltroPorComunidade(); // <- importante!
