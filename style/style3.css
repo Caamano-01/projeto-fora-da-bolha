@@ -97,10 +97,13 @@ nav ul li:hover svg {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.2); /* Fundo semi-transparente */
   border-radius: 20px;
   padding: 5px 15px;
   white-space: nowrap;
+  font-size: 0.9em;
+  font-weight: bold;
+  cursor: default;
+  background-color: #f6c4d1;
 }
 
 .community-bubble img {
@@ -171,9 +174,14 @@ nav ul li:hover svg {
 
 /* Estilos para o feed de posts e posts individuais */
 #feedPosts {
+    margin-top: 30px;
     display: flex;
     gap: 20px;
     flex-wrap: nowrap;
+    background-color: #f6c4d1;
+    border-radius: 0px 0px 10px 10px;
+    width: 100%;
+    height: 540px;
     overflow-x: auto;
   }
 
@@ -245,3 +253,10 @@ nav ul li:hover svg {
     text-align: right;
     opacity: 0.8;
   }
+
+  #listaComunidades {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
