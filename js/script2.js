@@ -124,7 +124,8 @@ postForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const usuario = document.getElementById("usuario").value.trim();
-  const categoria = document.getElementById("categoria").value.trim();
+  const select = document.getElementById("comunidadesSelect");
+  const comunidadesSelecionadas = Array.from(select.selectedOptions).map(option => option.textContent);
   const legenda = document.getElementById("legenda").value.trim();
   const imagemArquivo = document.getElementById("imagemUpload").files[0];
   const imagemURLManual = document.getElementById("imagemURL").value.trim();
@@ -148,7 +149,7 @@ postForm.addEventListener("submit", async (e) => {
   try {
     await addDoc(collection(db, "posts"), {
       usuario,
-      categoria,
+      comunidades: comunidadesSelecionadas,
       legenda,
       imagemURL: imagemURLFinal,
       timestamp: serverTimestamp()
@@ -162,6 +163,26 @@ postForm.addEventListener("submit", async (e) => {
   postForm.reset();
 });
 
+function preencherSelectComunidades() {
+  const select = document.getElementById('comunidadesSelect');
+  const q = query(collection(db, 'comunidades'), orderBy('timestamp', 'desc'));
+
+  onSnapshot(q, snapshot => {
+    select.innerHTML = ''; // limpa
+    snapshot.forEach(doc => {
+      const comunidade = doc.data();
+      const option = document.createElement('option');
+      option.value = doc.id; // salva o ID da comunidade
+      option.textContent = comunidade.nome;
+      select.appendChild(option);
+    });
+  });
+}
+
+btnFazerPost.addEventListener("click", () => {
+  modalOverlay.classList.add("active");
+  preencherSelectComunidades();
+});
 
 // =========================
 // FEED DE POSTS
@@ -184,7 +205,9 @@ function renderPost(post) {
         <div class="post-avatar">${post.usuario.charAt(0)?.toUpperCase() || "?"}</div>
         <div>${escapeHTML(post.usuario)}</div>
       </div>
-      <div class="post-category">em '${escapeHTML(post.categoria)}'</div>
+      <div class="post-comunidades">
+        ${post.comunidades?.map(nome => `<span class="tag-comunidade">${escapeHTML(nome)}</span>`).join(" ") || ""}
+      </div>
       <img class="post-image" src="${post.imagemURL}" alt="Imagem do post" />
       <div class="post-caption">${escapeHTML(post.legenda)}</div>
       <div class="post-timestamp">${timeString}</div>

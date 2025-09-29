@@ -186,3 +186,22 @@ function renderComunidade(comunidade) {
     </div>
   `;
 }
+
+function addFiltroPorComunidade() {
+  const bolhas = document.querySelectorAll('.community-bubble');
+
+  bolhas.forEach(bolha => {
+    bolha.addEventListener('click', () => {
+      const nomeComunidade = bolha.dataset.nome;
+
+      const filtrados = postsCache.filter(post =>
+        post.comunidades && post.comunidades.includes(nomeComunidade)
+      );
+
+      renderFeed(filtrados);
+    });
+  });
+}
+
+listaComunidades.innerHTML = comunidades.map(renderComunidade).join('');
+addFiltroPorComunidade(); // <- importante!

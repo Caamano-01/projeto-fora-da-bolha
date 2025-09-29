@@ -57,7 +57,9 @@
                     <form id="postForm">
                         <button type="button" id="closeModalBtn" title="Fechar">×</button>
                         <input type="text" id="usuario" placeholder="@seu-usuario" required />
-                        <input type="text" id="categoria" placeholder="Categoria (ex: Livros)" required />
+                        <select id="comunidadesSelect" multiple required>
+                            <!-- opções serão adicionadas dinamicamente -->
+                        </select>
                         <textarea id="legenda" placeholder="Legenda do post" required></textarea>
                         <input type="file" id="imagemUpload" accept="image/*" />
                         <input type="text" id="imagemURL" placeholder="Ou cole a URL da imagem" />

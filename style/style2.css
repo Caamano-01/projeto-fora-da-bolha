@@ -594,12 +594,19 @@ p {
   color: #b7c12e;
 }
 
+.post-comunidades {
+  margin: 8px 0;
+}
 
-
-
-
-
-
+.tag-comunidade {
+  display: inline-block;
+  background-color: #e0e0e0;
+  color: #333;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  margin-right: 5px;
+}
   /* ====== ESTILOS DO PLAYER SPOTIFY ====== */
 #moodDia {
     background: #f8e3e6;
