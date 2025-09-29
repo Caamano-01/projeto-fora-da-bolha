@@ -195,8 +195,9 @@ function renderPost(post) {
     ? new Date(post.timestamp.toDate()).toLocaleString()
     : "";
 
-  const deleteButton = (currentUser && post.userId === currentUser.uid) ?
-    `<button class="delete-post-btn" data-post-id="${post.id}">×</button>` : '';
+  const deleteButton = (currentUser && post.userId === currentUser.uid)
+  ? `<button class="delete-post-btn" data-post-id="${post.id}">×</button>`
+  : '';
 
   return `
     <div class="post-card">
