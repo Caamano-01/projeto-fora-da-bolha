@@ -177,9 +177,11 @@ inputSearch.addEventListener("input", () => {
 });
 
 function renderComunidade(comunidade) {
+  const imagem = comunidade.imagemURL || "https://api.cloudinary.com/v1_1/dyeh43lpp/upload";
+
   return `
     <div class="community-bubble">
-      <img src="" alt="${comunidade.nome}">
+      <img src="${imagem}" alt="${comunidade.nome}" />
       <span>${comunidade.nome}</span>
     </div>
   `;
