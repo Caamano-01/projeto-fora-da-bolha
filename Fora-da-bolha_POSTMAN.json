@@ -1,0 +1,254 @@
+{
+	"info": {
+		"_postman_id": "4a6ec76a-b11f-4e11-bbbf-e52dd78419ec",
+		"name": "Firebase + Firestore + Cloudinary API Tests",
+		"description": "Coleção completa de testes no Postman para Firebase Auth, Firestore e Cloudinary (com GET e POST)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48543749"
+	},
+	"item": [
+		{
+			"name": "Firebase Auth",
+			"item": [
+				{
+					"name": "Sign Up (Criar Usuário)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"nome\": \"teste\",\n \"nome de usuário\": \"testes\", \n  \"email\": \"teste@teste.com\",\n  \"password\": \"123456\",\n  \"returnSecureToken\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyATlni7o4e_1gTrEYxvo-_RyO79NxRC0MI",
+							"protocol": "https",
+							"host": [
+								"identitytoolkit",
+								"googleapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"accounts:signUp"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "AIzaSyATlni7o4e_1gTrEYxvo-_RyO79NxRC0MI"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign In (Login)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"teste@teste.com\",\n  \"password\": \"123456\",\n  \"returnSecureToken\": true\n}"
+						},
+						"url": {
+							"raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyATlni7o4e_1gTrEYxvo-_RyO79NxRC0MI",
+							"protocol": "https",
+							"host": [
+								"identitytoolkit",
+								"googleapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"accounts:signInWithPassword"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "AIzaSyATlni7o4e_1gTrEYxvo-_RyO79NxRC0MI"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Firestore",
+			"item": [
+				{
+					"name": "Criar Post (POST)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImU4MWYwNTJhZWYwNDBhOTdjMzlkMjY1MzgxZGU2Y2I0MzRiYzM1ZjMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZm9yYS1kYS1ib2xoYSIsImF1ZCI6ImZvcmEtZGEtYm9saGEiLCJhdXRoX3RpbWUiOjE3NTkzNDY2NjEsInVzZXJfaWQiOiI3Q1VoM1F2SzIxYXBqQW9reHNCbGpOdTZ1VXoyIiwic3ViIjoiN0NVaDNRdksyMWFwakFva3hzQmxqTnU2dVV6MiIsImlhdCI6MTc1OTM0NjY2MSwiZXhwIjoxNzU5MzUwMjYxLCJlbWFpbCI6InRlc3RlQHRlc3RlLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJ0ZXN0ZUB0ZXN0ZS5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.HmZAsmx_tjauVtivet-3vGgOoqoUM45LpCwr92B_Ac7GrHpJvHO98CMA3y__Cje9heGfoOnWoO2WsHtTo_wzprzYwoBH5deQdQlmvyVz-SKh1GQL84RcqTdNoBD-nPFJ9_kZnzeSvPYA8g2oWqQet2rFPoGb0RL-POpNmdUhSXRUkzndho9u8RSVt0bdRxK_L4Q66Sx4HZnKsmD8w31_KoUb-x1z2K4O3xALuBOPUmwG-XXK9QfJTihQiajQOqlhRnV6ZVSrNAq3AHN4lLxZkuj7uhKJO6ktdvNCQMAywAIAY9xazut91HlVPTcX8QzVwdWsBMZcYDMK4EKox003kg"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fields\": {\n    \"usuario\": {\n      \"stringValue\": \"Isabele\"\n    },\n    \"legenda\": {\n      \"stringValue\": \"Post via Postman \\ud83d\\ude80\"\n    },\n    \"imagemURL\": {\n      \"stringValue\": \"https://via.placeholder.com/300\"\n    },\n    \"userId\": {\n      \"stringValue\": \"USER_ID\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://firestore.googleapis.com/v1/projects/fora-da-bolha/databases/(default)/documents/posts",
+							"protocol": "https",
+							"host": [
+								"firestore",
+								"googleapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"projects",
+								"fora-da-bolha",
+								"databases",
+								"(default)",
+								"documents",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Posts (GET)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImU4MWYwNTJhZWYwNDBhOTdjMzlkMjY1MzgxZGU2Y2I0MzRiYzM1ZjMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZm9yYS1kYS1ib2xoYSIsImF1ZCI6ImZvcmEtZGEtYm9saGEiLCJhdXRoX3RpbWUiOjE3NTkzNDY2NjEsInVzZXJfaWQiOiI3Q1VoM1F2SzIxYXBqQW9reHNCbGpOdTZ1VXoyIiwic3ViIjoiN0NVaDNRdksyMWFwakFva3hzQmxqTnU2dVV6MiIsImlhdCI6MTc1OTM0NjY2MSwiZXhwIjoxNzU5MzUwMjYxLCJlbWFpbCI6InRlc3RlQHRlc3RlLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJ0ZXN0ZUB0ZXN0ZS5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.HmZAsmx_tjauVtivet-3vGgOoqoUM45LpCwr92B_Ac7GrHpJvHO98CMA3y__Cje9heGfoOnWoO2WsHtTo_wzprzYwoBH5deQdQlmvyVz-SKh1GQL84RcqTdNoBD-nPFJ9_kZnzeSvPYA8g2oWqQet2rFPoGb0RL-POpNmdUhSXRUkzndho9u8RSVt0bdRxK_L4Q66Sx4HZnKsmD8w31_KoUb-x1z2K4O3xALuBOPUmwG-XXK9QfJTihQiajQOqlhRnV6ZVSrNAq3AHN4lLxZkuj7uhKJO6ktdvNCQMAywAIAY9xazut91HlVPTcX8QzVwdWsBMZcYDMK4EKox003kg"
+							}
+						],
+						"url": {
+							"raw": "https://firestore.googleapis.com/v1/projects/fora-da-bolha/databases/(default)/documents/posts",
+							"protocol": "https",
+							"host": [
+								"firestore",
+								"googleapis",
+								"com"
+							],
+							"path": [
+								"v1",
+								"projects",
+								"fora-da-bolha",
+								"databases",
+								"(default)",
+								"documents",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cloudinary",
+			"item": [
+				{
+					"name": "Upload de Imagem (POST)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "iCnlsbKlv/🥃🥃.jfif"
+								},
+								{
+									"key": "upload_preset",
+									"value": "fora-da-bolha",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.cloudinary.com/v1_1/dyeh43lpp/upload",
+							"protocol": "https",
+							"host": [
+								"api",
+								"cloudinary",
+								"com"
+							],
+							"path": [
+								"v1_1",
+								"dyeh43lpp",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Imagens (GET)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ODc5ODM4MTgzNjkzMTYyOnprT1dmd3FiRkFrTVNGNEc1Ty1JbF9MZDZjTQ==",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.cloudinary.com/v1_1/dyeh43lpp/resources/image/upload",
+							"protocol": "https",
+							"host": [
+								"api",
+								"cloudinary",
+								"com"
+							],
+							"path": [
+								"v1_1",
+								"dyeh43lpp",
+								"resources",
+								"image",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "API_KEY",
+			"value": "AIzaSyATlni7o4e_1gTrEYxvo-_RyO79NxRC0MI"
+		},
+		{
+			"key": "ID_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "CLOUDINARY_AUTH",
+			"value": "Base64(api_key:api_secret)"
+		}
+	]
+}
