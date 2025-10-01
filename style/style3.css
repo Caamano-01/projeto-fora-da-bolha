@@ -174,15 +174,13 @@ nav ul li:hover svg {
 
 /* Estilos para o feed de posts e posts individuais */
 #feedPosts {
-  margin-top: 15px;
     display: flex;
     gap: 20px;
     flex-wrap: nowrap;
-    background-color: #f6c4d1;
-    border-radius: 0px 0px 10px 10px;
-    width: 100%;
-    height: 650px;
     overflow-x: auto;
+    background-color: #f6c4d1;
+    margin-top: 15px;
+    padding: 10px 15px;
   }
 
   .post-card {
@@ -194,7 +192,7 @@ nav ul li:hover svg {
     flex-direction: column;
     gap: 10px;
     position: relative;
-    width: 600px;
+    width: 385px;
     height: 600px;
   }
 
@@ -233,10 +231,11 @@ nav ul li:hover svg {
   }
 
   .post-image {
+    width: 350px;         /* Largura total do card */
+    height: 70%;       /* Altura fixa para todas as imagens */
     border-radius: 15px;
-    object-fit: cover;
-    width: 100%;
-    height: 75%;
+    object-fit: cover;   /* Corta o excesso mantendo proporção e preenchendo */
+    object-position: center; /* Centraliza a imagem no corte */
   }
 
   .post-caption {
@@ -246,6 +245,10 @@ nav ul li:hover svg {
     border-radius: 15px;
     font-size: 0.9em;
     font-weight: 600;
+    width: 350px;
+    max-height: 100px;
+    overflow-y: auto;
+    min-height: 40px;
   }
 
   .post-timestamp {
@@ -253,6 +256,53 @@ nav ul li:hover svg {
     text-align: right;
     opacity: 0.8;
   }
+
+  /* Estilo para o botão de exclusão do armário */
+.delete-armario-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(116, 116, 116, 0.478);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 1em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.delete-armario-btn:hover {
+    background-color: rgba(255, 0, 0, 0.638);
+}
+
+/* Largura da barra */
+::-webkit-scrollbar {
+  width: 12px; /* largura vertical */
+  height: 12px; /* altura horizontal */
+}
+
+/* Fundo da barra */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* cor do fundo da barra */
+  border-radius: 10px;
+}
+
+/* Parte que você arrasta */
+::-webkit-scrollbar-thumb {
+  background-color: var(--fundo-rosa); /* cor do "polegar" da barra */
+  border-radius: 10px;
+  border: 3px solid #f1f1f1; /* espaço entre o polegar e o track */
+}
+
+/* Quando o mouse está sobre o polegar */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #b7c12e;
+}
 
   #listaComunidades {
   display: flex;
